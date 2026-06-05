@@ -243,29 +243,35 @@ function formatDateTime(value) {
 }
 
 function formatDate(value) {
-  const match = /^(\d{4})-(\d{2})-(\d{2})$/.exec(value);
-  if (!match) {
+  const date = new Date(`${value}T00:00:00Z`);
+  if (Number.isNaN(date.getTime())) {
     return value;
   }
 
-  const year = Number(match[1]);
-  const month = Number(match[2]);
-  const day = Number(match[3]);
-
-  return new Date(year, month - 1, day).toLocaleDateString();
+  return date.toLocaleDateString(undefined, { timeZone: 'UTC' });
 }
 
 function formatCurrency(value) {
-  return new Intl.NumberFormat(undefined, {
-    style: 'currency',
-    currency: currencyCode,
-  }).format(value);
+  try {
+    return new Intl.NumberFormat(undefined, {
+      style: 'currency',
+      currency: currencyCode,
+    }).format(value);
+  } catch {
+    return new Intl.NumberFormat(undefined, {
+      style: 'currency',
+      currency: 'USD',
+    }).format(value);
+  }
 }
 
 function loadCurrencyCode() {
   const persisted = localStorage.getItem(currencySettingKey);
-  if (typeof persisted === 'string' && /^[A-Z]{3}$/.test(persisted)) {
-    return persisted;
+  if (typeof persisted === 'string') {
+    const normalized = persisted.trim().toUpperCase();
+    if (/^[A-Z]{3}$/.test(normalized)) {
+      return normalized;
+    }
   }
 
   return 'USD';
