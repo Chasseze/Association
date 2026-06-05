@@ -13,3 +13,6 @@ A lightweight web-based app for managing an organisation or association.
 Open `index.html` from this repository in a browser.
 
 All data is stored in browser local storage.
+
+Optional: set a custom currency code in the browser console, for example:
+`localStorage.setItem("association-manager-currency", "EUR")`.
