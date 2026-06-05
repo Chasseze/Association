@@ -1,4 +1,6 @@
 const storageKey = 'association-manager-state';
+const currencySettingKey = 'association-manager-currency';
+const currencyCode = loadCurrencyCode();
 
 const state = loadState();
 
@@ -171,7 +173,7 @@ function renderContributions() {
   contributionList.textContent = '';
   state.contributions.forEach((contribution) => {
     const item = document.createElement('li');
-    item.textContent = `${contribution.memberName} contributed ${formatCurrency(contribution.amount)} on ${contribution.date}`;
+    item.textContent = `${contribution.memberName} contributed ${formatCurrency(contribution.amount)} on ${formatDate(contribution.date)}`;
     contributionList.appendChild(item);
   });
 }
@@ -240,11 +242,33 @@ function formatDateTime(value) {
   return date.toLocaleString();
 }
 
+function formatDate(value) {
+  const match = /^(\d{4})-(\d{2})-(\d{2})$/.exec(value);
+  if (!match) {
+    return value;
+  }
+
+  const year = Number(match[1]);
+  const month = Number(match[2]);
+  const day = Number(match[3]);
+
+  return new Date(year, month - 1, day).toLocaleDateString();
+}
+
 function formatCurrency(value) {
   return new Intl.NumberFormat(undefined, {
     style: 'currency',
-    currency: 'USD',
+    currency: currencyCode,
   }).format(value);
+}
+
+function loadCurrencyCode() {
+  const persisted = localStorage.getItem(currencySettingKey);
+  if (typeof persisted === 'string' && /^[A-Z]{3}$/.test(persisted)) {
+    return persisted;
+  }
+
+  return 'USD';
 }
 
 render();
