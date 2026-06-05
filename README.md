@@ -1,2 +1,18 @@
 # Association
-This is a web-based app for organisational and associations management
+
+A lightweight web-based app for managing an organisation or association.
+
+## Features
+- Store member names and house addresses
+- Record management contributions
+- Schedule meetings with date/time and agenda
+- Create meeting alerts for members
+- Publish and share meeting minutes
+
+## Run locally
+Open `index.html` from this repository in a browser.
+
+All data is stored in browser local storage.
+
+Optional: set a custom currency code in the browser console, for example:
+`localStorage.setItem("association-manager-currency", "EUR")`.
