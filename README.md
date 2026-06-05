@@ -10,6 +10,6 @@ A lightweight web-based app for managing an organisation or association.
 - Publish and share meeting minutes
 
 ## Run locally
-Open `/tmp/workspace/Chasseze/Association/index.html` in a browser.
+Open `index.html` from this repository in a browser.
 
 All data is stored in browser local storage.
